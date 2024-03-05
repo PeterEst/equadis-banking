@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">
+  <h1 class="menu-title">Equadis</h1>
+
+  <div class="buttons-container">
+    @for (route of routes; track route.path) {
+    <button
+      routerLink="{{ route.path }}"
+      [color]="buttonTheme(route.path)"
+      mat-raised-button
+    >
+      {{ route.data?.['displayName'] || '' }}
+    </button>
+    }
+  </div>
+</mat-toolbar>

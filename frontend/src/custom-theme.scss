@@ -1,0 +1,94 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+
+$custom-primary-palette: (
+  50: #e1e4e6,
+  100: #b5bcc2,
+  200: #848f99,
+  300: #526270,
+  400: #2d4051,
+  500: #081e32,
+  600: #071a2d,
+  700: #061626,
+  800: #04121f,
+  900: #020a13,
+  A100: #548dff,
+  A200: #216bff,
+  A400: #004fed,
+  A700: #0047d4,
+  contrast: (
+    50: #000,
+    100: #000,
+    200: #000,
+    300: #fff,
+    400: #fff,
+    500: #fff,
+    600: #fff,
+    700: #fff,
+    800: #fff,
+    900: #fff,
+  ),
+);
+
+$custom-accent-palette: (
+  50: #ebfcf3,
+  100: #cdf9e2,
+  200: #acf5ce,
+  300: #8af0ba,
+  400: #71edac,
+  500: #58ea9d,
+  600: #50e795,
+  700: #47e48b,
+  800: #3de181,
+  900: #2ddb6f,
+  A100: #ffffff,
+  A200: #e9fff1,
+  A400: #b6ffd0,
+  A700: #9cffc0,
+  contrast: (
+    50: #000,
+    100: #000,
+    200: #000,
+    300: #fff,
+    400: #fff,
+    500: #fff,
+    600: #fff,
+    700: #fff,
+    800: #fff,
+    900: #fff,
+  ),
+);
+
+$equadis-frontend-primary: mat.define-palette($custom-primary-palette);
+$equadis-frontend-accent: mat.define-palette($custom-accent-palette);
+
+// The warn palette is optional (defaults to red).
+$equadis-frontend-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$equadis-frontend-theme: mat.define-light-theme((
+  color: (
+    primary: $equadis-frontend-primary,
+    accent: $equadis-frontend-accent,
+    warn: $equadis-frontend-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($equadis-frontend-theme);
+

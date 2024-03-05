@@ -1,0 +1,13 @@
+section {
+    padding: 40px;
+}
+
+.seperator {
+    margin: 20px 0;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  ms-sql-server:
+    container_name: ms-sql-server
+    image: mcr.microsoft.com/mssql/server
+    env_file: .env
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${SA_PASSWORD}
+      - MSSQL_DATABASE=${MSSQL_DATABASE_NAME}
+    ports:
+      - ${MSSQL_SERVER_PORT}:${MSSQL_DOCKER_PORT}
+    volumes:
+      - db:/var/lib/mssql
+
+  spring-boot-app:
+    container_name: spring-boot-app
+    platform: linux/amd64
+    depends_on:
+      - ms-sql-server
+    build: .
+    restart: on-failure
+    env_file: .env
+    ports:
+      - ${SPRING_BOOT_APP_PORT}:${SPRING_BOOT_DOCKER_PORT}
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://ms-sql-server:${MSSQL_SERVER_PORT};databaseName=${MSSQL_DATABASE_NAME};encrypt=true;trustServerCertificate=true;
+      - SPRING_DATASOURCE_USERNAME=${SA_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SA_PASSWORD}
+
+  equadis-frontend:
+    container_name: equadis-frontend
+    depends_on:
+      - spring-boot-app
+    build: ./frontend
+    ports:
+      - ${FRONTEND_APP_PORT}:${FRONTEND_DOCKER_PORT}
+    expose:
+      - ${FRONTEND_APP_PORT}
+
+volumes:
+  db:

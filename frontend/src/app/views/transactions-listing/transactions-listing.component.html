@@ -1,0 +1,85 @@
+<section>
+  <div class="header-container">
+    <h1>{{ title }}</h1>
+  </div>
+
+  <app-seperator/>
+
+  <table mat-table [dataSource]="transactionsTableData">
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
+    <tr *matNoDataRow>
+      <td [attr.colspan]="displayColumns.length">{{ emptyTableMessage }}</td>
+    </tr>
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.id }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="customer">
+      <td mat-cell *matCellDef="let element">
+        <a routerLink="/customers/{{ element.account.customer.id }}">
+          {{ element.account.customer.name }}
+        </a>
+      </td>
+      <th mat-header-cell *matHeaderCellDef>Customer</th>
+    </ng-container>
+
+    <ng-container matColumnDef="account">
+      <th mat-header-cell *matHeaderCellDef>Account</th>
+      <td mat-cell *matCellDef="let element">
+        <a routerLink="/accounts/{{ element.account.id }}/transactions">
+          {{ element.account.id }}
+        </a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>Type</th>
+      <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="balance">
+      <th mat-header-cell *matHeaderCellDef>Balance</th>
+      <td mat-cell *matCellDef="let element">{{ element.balance }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef>Amount</th>
+      <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="success">
+      <th mat-header-cell *matHeaderCellDef>Success</th>
+      <td mat-cell *matCellDef="let element">
+        @if (element.success) {
+          <mat-icon>check</mat-icon>
+        } @else {
+          <mat-icon>close</mat-icon>
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="message">
+      <th mat-header-cell *matHeaderCellDef>Message</th>
+      <td mat-cell *matCellDef="let element">{{ element.message }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="created">
+      <th mat-header-cell *matHeaderCellDef>Created</th>
+      <td mat-cell *matCellDef="let element">{{ element.created | date : "medium" }}</td>
+    </ng-container>
+  </table>
+
+  <mat-paginator
+    hidePageSize="true"
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageIndex]="currentPage"
+    showFirstLastButtons
+    (page)="onPageChange($event)"
+  ></mat-paginator>
+</section>

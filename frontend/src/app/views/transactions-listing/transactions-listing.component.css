@@ -1,0 +1,22 @@
+section {
+  padding: 40px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-mdc-no-data-row {
+  text-align: center;
+}
+
+.mat-mdc-no-data-row td {
+  padding: 20px;
+}
