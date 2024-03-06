@@ -8,8 +8,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tech.peterestephan.equadisbackend.account.domain.entities.Account;
-import tech.peterestephan.equadisbackend.customer.domain.entities.Customer;
+import tech.peterestephan.equadisbackend.account.application.dtos.AccountDto;
+import tech.peterestephan.equadisbackend.customer.application.dtos.CustomerDto;
 import tech.peterestephan.equadisbackend.customer.domain.services.CustomerService;
 import tech.peterestephan.equadisbackend.common.utils.ApiResponse;
 
@@ -25,55 +25,55 @@ public class CustomerController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Customer>>> getCustomers(
+    public ResponseEntity<ApiResponse<List<CustomerDto>>> getCustomers(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String queryString
     ) {
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<Customer> customers;
-        if (queryString != null && !queryString.isEmpty()){
+        Page<CustomerDto> customers;
+        if (queryString != null && !queryString.isEmpty()) {
             customers = customerService.searchByName(queryString, pageable);
         } else {
             customers = customerService.getAll(pageable);
         }
 
-        return ApiResponse.<List<Customer>>builder()
+        return ApiResponse.<List<CustomerDto>>builder()
                 .pagination(customers)
                 .success(customers.getContent(), "Customers Retrieved Successfully")
                 .build();
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<ApiResponse<Customer>> getCustomer(@PathVariable Long customerId) {
-        Customer customer = customerService.findById(customerId);
+    public ResponseEntity<ApiResponse<CustomerDto>> getCustomer(@PathVariable Long customerId) {
+        CustomerDto customer = customerService.findDtoById(customerId);
 
-        return ApiResponse.<Customer>builder()
+        return ApiResponse.<CustomerDto>builder()
                 .success(customer, "Customer Retrieved Successfully")
                 .build();
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Customer>> createCustomer(@Valid @RequestBody Customer customer) {
-        Customer createdCustomer = customerService.save(customer);
+    public ResponseEntity<ApiResponse<CustomerDto>> createCustomer(@Valid @RequestBody CustomerDto customerDto) {
+        CustomerDto createdCustomer = customerService.saveDto(customerDto);
 
-        return ApiResponse.<Customer>builder()
+        return ApiResponse.<CustomerDto>builder()
                 .success(createdCustomer, "Customer Created Successfully", HttpStatus.CREATED)
                 .build();
     }
 
     @GetMapping("/{customerId}/accounts")
-    public ResponseEntity<ApiResponse<List<Account>>> getCustomerAccounts(
+    public ResponseEntity<ApiResponse<List<AccountDto>>> getCustomerAccounts(
             @PathVariable Long customerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("created").descending());
 
-        Page<Account> accounts = customerService.getCustomerAccounts(customerId, pageable);
+        Page<AccountDto> accounts = customerService.getCustomerAccounts(customerId, pageable);
 
-        return ApiResponse.<List<Account>>builder()
+        return ApiResponse.<List<AccountDto>>builder()
                 .pagination(accounts)
                 .success(accounts.getContent(), "Customer Accounts Retrieved Successfully")
                 .build();
