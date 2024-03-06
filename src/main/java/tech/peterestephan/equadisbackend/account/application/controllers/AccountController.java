@@ -7,7 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tech.peterestephan.equadisbackend.account.domain.entities.Account;
+import tech.peterestephan.equadisbackend.account.application.dtos.AccountCreationDto;
+import tech.peterestephan.equadisbackend.account.application.dtos.AccountDto;
 import tech.peterestephan.equadisbackend.account.domain.services.AccountService;
 import tech.peterestephan.equadisbackend.common.utils.ApiResponse;
 import tech.peterestephan.equadisbackend.transaction.domain.entities.Transaction;
@@ -27,34 +28,34 @@ public class AccountController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Account>>> getAccounts(
+    public ResponseEntity<ApiResponse<List<AccountDto>>> getAccounts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("created").descending());
 
-        Page<Account> accounts = accountService.getAll(pageable);
+        Page<AccountDto> accountsDtos = accountService.getAll(pageable);
 
-        return ApiResponse.<List<Account>>builder()
-                .pagination(accounts)
-                .success(accounts.getContent(), "Accounts Retrieved Successfully")
+        return ApiResponse.<List<AccountDto>>builder()
+                .pagination(accountsDtos)
+                .success(accountsDtos.getContent(), "Accounts Retrieved Successfully")
                 .build();
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Account>> createAccount(@Valid @RequestBody Account account) {
-        Account createdAccount = accountService.save(account);
+    public ResponseEntity<ApiResponse<AccountDto>> createAccount(@Valid @RequestBody AccountCreationDto accountCreationDto) {
+        AccountDto createdAccountDto = accountService.saveDto(accountCreationDto);
 
-        return ApiResponse.<Account>builder()
-                .success(createdAccount, "Account Created Successfully")
+        return ApiResponse.<AccountDto>builder()
+                .success(createdAccountDto, "Account Created Successfully")
                 .build();
     }
 
     @GetMapping("/{accountId}")
-    public ResponseEntity<ApiResponse<Account>> getAccount(@PathVariable Long accountId) {
-        Account account = accountService.findById(accountId);
+    public ResponseEntity<ApiResponse<AccountDto>> getAccount(@PathVariable Long accountId) {
+        AccountDto accountDto = accountService.findDtoById(accountId);
 
-        return ApiResponse.<Account>builder()
-                .success(account, "Account Retrieved Successfully")
+        return ApiResponse.<AccountDto>builder()
+                .success(accountDto, "Account Retrieved Successfully")
                 .build();
     }
 
