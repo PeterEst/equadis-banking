@@ -26,7 +26,7 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "1",
+									"value": "0",
 									"disabled": true
 								},
 								{
@@ -68,7 +68,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/customers/1/accounts?page=0",
+							"raw": "{{base_url}}/customers/1/accounts",
 							"host": [
 								"{{base_url}}"
 							],
@@ -80,7 +80,8 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "0"
+									"value": "0",
+									"disabled": true
 								},
 								{
 									"key": "size",
@@ -99,7 +100,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Peter Estephan\"\n}",
+							"raw": "{\n    \"id\": \"200\",\n    \"name\": \"Peter Estephan\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -129,7 +130,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/accounts?page=1&size=1",
+							"raw": "{{base_url}}/accounts",
 							"host": [
 								"{{base_url}}"
 							],
@@ -139,11 +140,13 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "1"
+									"value": "0",
+									"disabled": true
 								},
 								{
 									"key": "size",
-									"value": "1"
+									"value": "10",
+									"disabled": true
 								}
 							]
 						}
@@ -156,13 +159,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/accounts/1",
+							"raw": "{{base_url}}/accounts/53",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"accounts",
-								"1"
+								"53"
 							]
 						}
 					},
@@ -174,23 +177,25 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/accounts/52/transactions?page=0&size=10",
+							"raw": "{{base_url}}/accounts/53/transactions",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"accounts",
-								"52",
+								"53",
 								"transactions"
 							],
 							"query": [
 								{
 									"key": "page",
-									"value": "0"
+									"value": "0",
+									"disabled": true
 								},
 								{
 									"key": "size",
-									"value": "10"
+									"value": "10",
+									"disabled": true
 								}
 							]
 						}
@@ -204,7 +209,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"customer\": 1,\n    \"amount\": 100\n}",
+							"raw": "{\n    \"customer\": 2\n    // \"balance\": -100\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -252,7 +257,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"type\": \"DEPOSIT\",\n    \"amount\": 100,\n    \"account\": 2\n}",
+							"raw": "{\n    \"type\": \"DEPOSIT\",\n    \"amount\": 100,\n    \"account\": 53\n}",
 							"options": {
 								"raw": {
 									"language": "json"
