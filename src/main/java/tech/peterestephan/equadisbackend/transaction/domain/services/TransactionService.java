@@ -5,8 +5,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tech.peterestephan.equadisbackend.account.domain.entities.Account;
 import tech.peterestephan.equadisbackend.account.domain.services.AccountService;
-import tech.peterestephan.equadisbackend.common.exceptions.RequiredFieldException;
+import tech.peterestephan.equadisbackend.transaction.application.dtos.TransactionCreationDto;
+import tech.peterestephan.equadisbackend.transaction.application.dtos.TransactionDto;
 import tech.peterestephan.equadisbackend.transaction.domain.entities.Transaction;
+import tech.peterestephan.equadisbackend.transaction.domain.mappers.TransactionMapper;
 import tech.peterestephan.equadisbackend.transaction.domain.values.TransactionResult;
 import tech.peterestephan.equadisbackend.transaction.domain.enums.TransactionType;
 import tech.peterestephan.equadisbackend.transaction.infrastructure.repositories.TransactionRepository;
@@ -19,31 +21,33 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final AccountService accountService;
     private final Map<TransactionType, TransactionStrategy> transactionStrategyMap;
+    private final TransactionMapper transactionMapper;
 
     public TransactionService(
             TransactionRepository transactionRepository,
             AccountService accountService,
-            Map<TransactionType, TransactionStrategy> transactionStrategyMap
+            Map<TransactionType, TransactionStrategy> transactionStrategyMap,
+            TransactionMapper transactionMapper
     ) {
         this.transactionRepository = transactionRepository;
         this.accountService = accountService;
         this.transactionStrategyMap = transactionStrategyMap;
+        this.transactionMapper = transactionMapper;
     }
 
     public List<Transaction> getAll() {
         return transactionRepository.findAll();
     }
 
-    public Page<Transaction> getAll(Pageable pageable) {
-        return transactionRepository.findAll(pageable);
+    public Page<TransactionDto> getAll(Pageable pageable) {
+        Page<Transaction> transactions = transactionRepository.findAll(pageable);
+
+        return transactions.map(transactionMapper::transactionToTransactionDto);
     }
 
-    public Transaction save(Transaction transaction) {
-        if (transaction.getAccount().getId() == 0) {
-            throw new RequiredFieldException("Account ID is required");
-        }
-
-        Account assignedAccount = accountService.findById(transaction.getAccount().getId());
+    public TransactionDto save(TransactionCreationDto transactionCreationDto) {
+        Account assignedAccount = accountService.findById(transactionCreationDto.getAccount());
+        Transaction transaction = transactionMapper.transactionCreationDtoToTransaction(transactionCreationDto, assignedAccount);
 
         transaction.setAccount(assignedAccount);
         transaction.setBalance(assignedAccount.getBalance());
@@ -57,7 +61,8 @@ public class TransactionService {
         transaction.setSuccess(transactionResult.success());
         transaction.setMessage(transactionResult.message());
 
-        return transactionRepository.save(transaction);
+        Transaction savedTransaction = transactionRepository.save(transaction);
+        return transactionMapper.transactionToTransactionDto(savedTransaction);
     }
 
     public List<Transaction> findByAccount(Long accountId) {

@@ -1,7 +1,5 @@
 package tech.peterestephan.equadisbackend.transaction.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -21,11 +19,13 @@ public class Transaction {
     @NotNull(message = "Transaction type is required")
     private TransactionType type;
 
-    @Min(0)
-    private double balance = 0.0;
+    @Min(value = 0, message = "Transaction Account Balance is required")
+    @NotNull(message = "Transaction amount is required")
+    private Double balance = 0.0;
 
-    @Min(value = 1, message = "Amount must be greater or equal than 1")
-    private double amount;
+    @Min(value = 1, message = "Transaction Amount must be greater or equal than 1")
+    @NotNull(message = "Transaction amount is required")
+    private Double amount;
 
     @ManyToOne
     @JoinColumn(name = "account_id")
@@ -36,13 +36,6 @@ public class Transaction {
     private final Date created = new Date();
 
     public Transaction() {
-    }
-
-    @JsonCreator
-    public Transaction(@JsonProperty("account") long account) {
-        Account relatedAccount = new Account();
-        relatedAccount.setId(account);
-        this.account = relatedAccount;
     }
 
     public void setId(Long id) {
