@@ -52,7 +52,7 @@ public class AccountController {
 
     @GetMapping("/{accountId}")
     public ResponseEntity<ApiResponse<AccountDto>> getAccount(@PathVariable Long accountId) {
-        AccountDto accountDto = accountService.findDtoById(accountId);
+        AccountDto accountDto = accountService.getDtoById(accountId);
 
         return ApiResponse.<AccountDto>builder()
                 .success(accountDto, "Account Retrieved Successfully")
@@ -66,7 +66,7 @@ public class AccountController {
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("created").descending());
 
-        Page<Transaction> transactions = transactionService.findByAccount(accountId, pageable);
+        Page<Transaction> transactions = transactionService.getByAccount(accountId, pageable);
 
         return ApiResponse.<List<Transaction>>builder()
                 .pagination(transactions)

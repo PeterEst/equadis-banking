@@ -38,7 +38,7 @@ public class AccountService {
     }
 
     public AccountDto saveDto(AccountCreationDto accountCreationDto) {
-        Customer assignedCustomer = customerService.findById(accountCreationDto.getCustomer());
+        Customer assignedCustomer = customerService.getById(accountCreationDto.getCustomer());
 
         Account account = accountMapper.accountCreationDtoToAccount(accountCreationDto, assignedCustomer);
 
@@ -51,7 +51,7 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    public Account findById(Long id) {
+    public Account getById(Long id) {
         Optional<Account> optionalAccount = accountRepository.findById(id);
 
         if (optionalAccount.isEmpty()) {
@@ -61,7 +61,7 @@ public class AccountService {
         return optionalAccount.get();
     }
 
-    public AccountDto findDtoById(Long id) {
+    public AccountDto getDtoById(Long id) {
         Optional<Account> optionalAccount = accountRepository.findById(id);
 
         if (optionalAccount.isEmpty()) {
