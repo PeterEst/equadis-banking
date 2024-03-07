@@ -44,7 +44,7 @@ This project implements a banking system using Spring Boot for the backend and A
   cp .env.example .env
 ```
 
-Update the values in the `.env` file as needed. If `SPRING_BOOT_DOCKER_PORT` is changed other than `8080`, make sure to update the NGINX configuration `nginx.conf` in the `frontend` folder to match the Docker network backend port.
+- Update the values in the `.env` file as needed. If `SPRING_BOOT_DOCKER_PORT` is changed other than `8080`, make sure to update the NGINX configuration `nginx.conf` in the `frontend` folder to match the Docker network backend port.
 
 ```bash
   location /api {
@@ -52,7 +52,14 @@ Update the values in the `.env` file as needed. If `SPRING_BOOT_DOCKER_PORT` is 
    }
 ```
 
+- Leave the SA_USERNAME environment variable as `sa` (System Administrator)
+
+- Generate a strong password for the SA_PASSWORD environment variable. A strong password should include a mix of capital letters, small letters, and special characters. You can follow the guidelines provided by Microsoft SQL Server [Here](https://learn.microsoft.com/en-us/sql/relational-databases/security/strong-passwords?view=sql-server-ver16).
+
 3- **Execute the following command in the root folder to build and run the project:**
+
+Before executing this command, ensure that the Docker daemon is running.
+
 ```bash
   docker-compose up
 ```
@@ -66,22 +73,21 @@ There are multiple ways to access the SQL Server and create the database:
     is working with a status of UP using: `docker ps` command
 
 - Accessing the Docker container directly:
-    - `docker exec -it ms-sql-server sh`
-    - `/opt/mssql-tools/bin/sqlcmd -U <SA_USERNAME> -P <SA_PASSWORD>` (Set in .env)
-    - `create database <MSSQL_DATABASE_NAME>`
-    - `exit` (exits sqlcmd)
-    - `exit` (exits shell)
+  - `docker exec -it ms-sql-server sh`
+  - `/opt/mssql-tools/bin/sqlcmd -U <SA_USERNAME> -P <SA_PASSWORD> -Q "CREATE DATABASE <MSSQL_DATABASE_NAME>"` (Variables set in .env)
+  - `exit` (exits sqlcmd)
+  - `exit` (exits shell)
 
 - Installing a CLI tool and accessing the database (e.g., using sql-cli npm package)
-    - `npm i -g sql-cli`
-    - `mssql -u <SA_USERNAME> -p <SA_PASSWORD>`
-    - `create database <MSSQL_DATABASE_NAME>`
+  - `npm i -g sql-cli`
+  - `mssql -u <SA_USERNAME> -p <SA_PASSWORD>`
+  - `create database <MSSQL_DATABASE_NAME>`
 
 - Using any GUI database tool.
 
 
 4-  **The system should be up and running!**
 - http://localhost:{FRONTEND_APP_PORT} or http://localhost if the frontend is port forwarded to the default port of `80` as set in the `.env.example`.
-![Angular Frontend](https://i.ibb.co/CWvBjQT/Screenshot-2024-03-07-at-12-21-06-AM.png)
+  ![Angular Frontend](https://i.ibb.co/CWvBjQT/Screenshot-2024-03-07-at-12-21-06-AM.png)
 - http://localhost:{SPRING_BOOT_APP_PORT}/swagger-ui/index.html to access Swagger.
-![Swagger UI](https://i.ibb.co/zhh1Twh/Screenshot-2024-03-07-at-12-21-15-AM.png)
+  ![Swagger UI](https://i.ibb.co/zhh1Twh/Screenshot-2024-03-07-at-12-21-15-AM.png)
