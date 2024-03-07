@@ -47,7 +47,7 @@ public class CustomerController {
 
     @GetMapping("/{customerId}")
     public ResponseEntity<ApiResponse<CustomerDto>> getCustomer(@PathVariable Long customerId) {
-        CustomerDto customer = customerService.findDtoById(customerId);
+        CustomerDto customer = customerService.getDtoById(customerId);
 
         return ApiResponse.<CustomerDto>builder()
                 .success(customer, "Customer Retrieved Successfully")
