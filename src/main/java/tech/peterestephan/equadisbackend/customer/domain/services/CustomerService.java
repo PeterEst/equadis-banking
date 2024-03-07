@@ -46,7 +46,7 @@ public class CustomerService {
         return customers.map(customerMapper::customerToCustomerDto);
     }
 
-    public CustomerDto findDtoById(Long id) {
+    public CustomerDto getDtoById(Long id) {
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
 
         if (optionalCustomer.isEmpty()) {
@@ -56,7 +56,7 @@ public class CustomerService {
         return customerMapper.customerToCustomerDto(optionalCustomer.get());
     }
 
-    public Customer findById(Long id) {
+    public Customer getById(Long id) {
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
 
         if (optionalCustomer.isEmpty()) {

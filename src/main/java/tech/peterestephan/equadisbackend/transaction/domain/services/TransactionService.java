@@ -46,7 +46,7 @@ public class TransactionService {
     }
 
     public TransactionDto save(TransactionCreationDto transactionCreationDto) {
-        Account assignedAccount = accountService.findById(transactionCreationDto.getAccount());
+        Account assignedAccount = accountService.getById(transactionCreationDto.getAccount());
         Transaction transaction = transactionMapper.transactionCreationDtoToTransaction(transactionCreationDto, assignedAccount);
 
         transaction.setAccount(assignedAccount);
@@ -65,11 +65,11 @@ public class TransactionService {
         return transactionMapper.transactionToTransactionDto(savedTransaction);
     }
 
-    public List<Transaction> findByAccount(Long accountId) {
+    public List<Transaction> getByAccount(Long accountId) {
         return transactionRepository.findByAccountId(accountId);
     }
 
-    public Page<Transaction> findByAccount(Long accountId, Pageable pageable) {
+    public Page<Transaction> getByAccount(Long accountId, Pageable pageable) {
         return transactionRepository.findByAccountId(accountId, pageable);
     }
 }
