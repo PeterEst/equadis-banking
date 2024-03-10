@@ -9,7 +9,7 @@ public class DepositTransactionStrategy implements TransactionStrategy {
     @Override
     public TransactionResult execute(Account account, double amount) {
         if (amount <= 0) {
-            return new TransactionResult(false, account, "Deposit transaction failed, Withdraw transaction failed, amount must be greater than 0");
+            return new TransactionResult(false, account, "Deposit transaction failed, amount must be greater than 0");
         }
 
         double accountAmount = account.getBalance();

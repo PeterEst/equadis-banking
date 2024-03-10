@@ -38,6 +38,6 @@ public class DepositTransactionStrategyTest {
         // Assert
         assertFalse(result.success());
         assertEquals(initialBalance, account.getBalance());
-        assertEquals("Deposit transaction failed, Withdraw transaction failed, amount must be greater than 0", result.message());
+        assertEquals("Deposit transaction failed, amount must be greater than 0", result.message());
     }
 }
