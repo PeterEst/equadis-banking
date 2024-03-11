@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
+import {Component} from '@angular/core';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatButtonModule} from '@angular/material/button';
 import {
   IsActiveMatchOptions,
   Route,
@@ -17,6 +17,7 @@ import {
 })
 export class HeaderMenuComponent {
   routes: Route[] = [];
+
   constructor(private router: Router) {
     this.routes = this.router.config.filter(
       (route) => route.data && route.data['displayInHeader']
@@ -38,5 +39,9 @@ export class HeaderMenuComponent {
     if (route === undefined) return '';
 
     return this.isActiveRoute(route) ? 'accent' : '';
+  }
+
+  handleMenuTitleClick() {
+    this.router.navigate(['/']);
   }
 }

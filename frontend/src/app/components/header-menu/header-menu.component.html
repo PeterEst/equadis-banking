@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-  <h1 class="menu-title">Equadis</h1>
+  <a (click)="handleMenuTitleClick()" class="menu-title">Equadis</a>
 
   <div class="buttons-container">
     @for (route of routes; track route.path) {
