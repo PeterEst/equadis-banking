@@ -7,13 +7,21 @@ import tech.peterestephan.equadisbackend.transaction.domain.values.TransactionRe
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DepositTransactionStrategyTest {
+
+    private final DepositTransactionStrategy depositStrategy = new DepositTransactionStrategy();
+
+    private Account generateAccount(double balance) {
+        Account account = new Account();
+        account.setBalance(balance);
+        return account;
+    }
+
     @Test
     void execute_ValidDeposit_ShouldReturnSuccessfulTransaction() {
         // Arrange
-        Account account = new Account();
+        Account account = this.generateAccount(0.0);
         double initialBalance = account.getBalance();
         double depositAmount = 100.0;
-        DepositTransactionStrategy depositStrategy = new DepositTransactionStrategy();
 
         // Act
         TransactionResult result = depositStrategy.execute(account, depositAmount);
@@ -27,10 +35,9 @@ public class DepositTransactionStrategyTest {
     @Test
     void execute_InvalidDeposit_ShouldReturnFailedTransaction() {
         // Arrange
-        Account account = new Account();
+        Account account = this.generateAccount(0.0);
         double initialBalance = account.getBalance();
         double depositAmount = -100.0;
-        DepositTransactionStrategy depositStrategy = new DepositTransactionStrategy();
 
         // Act
         TransactionResult result = depositStrategy.execute(account, depositAmount);
